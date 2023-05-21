@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 
 def convert(array):
@@ -10,32 +12,33 @@ def convert(array):
         result.append(byte)
     return result
 
-f = input("image/folder location: ").strip('"')
-if os.path.isfile(f):
-    file_path = f.replace('.lsc', '.dds')
+if __name__ == '__main__':
+    f = input("image/folder location: ").strip('"')
+    if os.path.isfile(f):
+        file_path = f.replace('.lsc', '.dds')
 
-    with open(f, 'rb') as file:
-        data = file.read()
-        array_byte = list(data)
+        with open(f, 'rb') as file:
+            data = file.read()
+            array_byte = list(data)
 
-    with open(file_path, 'wb') as dds:
-        dds.write(bytearray(convert(array_byte)))
-        print("Written file:", file_path)
-else:
-    for x, _, y in os.walk(f):
-        for z in y:
-            if not z.endswith('.lsc'):
-                continue
-            
-            file = x + '\\' + z
-            file_path = x + '\\' + z.replace('.lsc', '.dds')
+        with open(file_path, 'wb') as dds:
+            dds.write(bytearray(convert(array_byte)))
+            print("Saved file:", file_path)
+    else:
+        for x, _, y in os.walk(f):
+            for z in y:
+                if not z.endswith('.lsc'):
+                    continue
+                
+                file = x + '\\' + z
+                file_path = x + '\\' + z.replace('.lsc', '.dds')
 
-            with open(file, 'rb') as raw_file:
-                data = raw_file.read()
-                array_byte = list(data)
+                with open(file, 'rb') as raw_file:
+                    data = raw_file.read()
+                    array_byte = list(data)
 
-            with open(file_path, 'wb') as dds:
-                dds.write(bytearray((convert(array_byte))))
-                print("Saved image: ", file_path)
-
-input('Press enter to exit')
+                with open(file_path, 'wb') as dds:
+                    dds.write(bytearray((convert(array_byte))))
+                    print("Saved image: ", file_path)
+    print()
+    input('Press enter to exit')
